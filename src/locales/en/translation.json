@@ -1,0 +1,16 @@
+{
+  "login": {
+    "title": "Welcome to Thiago's AI Assistant",
+    "emailPlaceholder": "your@email.com",
+    "continue": "Continue →",
+    "codeMessage": "Enter the code we sent to {{email}}",
+    "codePlaceholder": "XXXXXX"
+  },
+  "assistant": {
+    "title": "AI Assistant",
+    "welcome": "Hi! I’m Thiago’s AI Assistant. Ask me anything about his experience, projects, or skills.",
+    "placeholder": "Ask something about Thiago…",
+    "thinking": "Thinking…",
+    "error": "Sorry, something went wrong. Please try again."
+  }
+}
