@@ -1,0 +1,16 @@
+{
+  "login": {
+    "title": "Välkommen till Thiagos AI-assistent",
+    "emailPlaceholder": "din@email.se",
+    "continue": "Fortsätt →",
+    "codeMessage": "Ange koden vi skickade till {{email}}",
+    "codePlaceholder": "XXXXXX"
+  },
+  "assistant": {
+    "title": "AI-assistent",
+    "welcome": "Hej! Jag är Thiagos AI-assistent. Fråga mig om hans erfarenhet och projekt.",
+    "placeholder": "Fråga något om Thiago…",
+    "thinking": "Tänker…",
+    "error": "Något gick fel. Försök igen."
+  }
+}
