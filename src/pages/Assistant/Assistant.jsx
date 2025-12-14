@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LogOut } from "react-feather";
+import Header from "../../static/Header";
+import renderMarkdown from "../../utils/renderMarkdown";
+
 import "./Assistant.css";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export default function Assistant({ onLogout }) {
+export default function Assistant({ onLogout, onAiKnowledge, onFeedback }) {
   const { t, i18n } = useTranslation();
 
   const [messages, setMessages] = useState([]);
@@ -39,10 +42,15 @@ export default function Assistant({ onLogout }) {
     setLoading(true);
 
     try {
-      const res = await fetch(`${API_BASE_URL}ai-chat`, {
+      const res = await fetch(`${API_BASE_URL}chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: updatedMessages })
+        body: JSON.stringify({
+          history: updatedMessages,
+          userMessage: input.trim(),
+          instructions: "",
+          userName: "Recruiter"
+        })
       });
 
       const data = await res.json();
@@ -73,36 +81,38 @@ export default function Assistant({ onLogout }) {
   return (
     <div className="assistant-page">
       {/* Header */}
-      <header className="assistant-header">
-        <div className="assistant-container assistant-header-inner">
-          <h2>{t("assistant.title")}</h2>
-
-          <button
-            className="assistant-logout"
-            onClick={onLogout}
-            aria-label="Logout"
-          >
-            <LogOut size={18} />
-          </button>
-        </div>
-      </header>
+      <Header
+        onLogout={onLogout}
+        onFeedback={onFeedback}
+        onAiKnowledge={onAiKnowledge}
+      />
 
 
       {/* Chat */}
       <div className="assistant-chat">
         <div className="assistant-container assistant-chat-inner">
-          {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`assistant-bubble ${msg.role}`}
-            >
-              {msg.content}
-            </div>
-          ))}
+          {messages.map((msg, i) =>
+            msg.role !== "user" ? (
+              <div
+                key={i}
+                className="assistant-bubble assistant"
+                dangerouslySetInnerHTML={renderMarkdown(msg.content)}
+              />
+            ) : (
+              <div
+                key={i}
+                className="assistant-bubble user"
+              >
+                {msg.content}
+              </div>
+            )
+          )}
 
           {loading && (
             <div className="assistant-bubble assistant">
-              {t("assistant.thinking")}
+              <span className="thinking">
+                {t("assistant.thinking")}
+              </span>
             </div>
           )}
 

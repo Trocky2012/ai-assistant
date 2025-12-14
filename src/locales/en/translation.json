@@ -3,6 +3,7 @@
     "title": "Welcome to Thiago's AI Assistant",
     "emailPlaceholder": "your@email.com",
     "continue": "Continue →",
+    "loading":"Loading...",
     "codeMessage": "Enter the code we sent to {{email}}",
     "codePlaceholder": "XXXXXX"
   },
