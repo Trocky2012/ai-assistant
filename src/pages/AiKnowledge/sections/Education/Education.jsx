@@ -1,21 +1,23 @@
-// src/pages/AiKnowledge/sections/Projects/Projects.jsx
+// src/pages/AiKnowledge/sections/Education/Education.jsx
 import { useEffect, useState } from "react";
 import Alert from "../../../../components/Alert/Alert";
-import { addProject } from "../../../../api/ProjectsApi";
+import { addEducation } from "../../../../api/EducationApi";
 
 const DEFAULT_JSON = `{
-  "projectName": "Project Name",
-  "technologies": "Java, React JS, Node JS",
-  "duration": "Jun 2024 - Oct 2025",
-  "description": "Description (long text)"
+  "institution": "University / School Name",
+  "course": "Course or Program Name",
+  "level": "Bachelor / Master / PhD / Certificate",
+  "country": "Country",
+  "duration": "YYYY - YYYY"
 }`;
 
-export default function Projects({ userId, email, jsonData }) {
+export default function Education({ userId, email, jsonData }) {
   const [form, setForm] = useState({
-    projectName: "",
-    technologies: "",
-    duration: "",
-    description: ""
+    institution: "",
+    course: "",
+    level: "",
+    country: "",
+    duration: ""
   });
 
   const [rawJson, setRawJson] = useState("");
@@ -72,7 +74,7 @@ export default function Projects({ userId, email, jsonData }) {
   /* -------------------- SUBMIT -------------------- */
   async function handleSubmit() {
     try {
-      await addProject({
+      await addEducation({
         userId,
         email,
         jsonData,
@@ -82,19 +84,19 @@ export default function Projects({ userId, email, jsonData }) {
 
       setAlert({
         type: "success",
-        message: "Project saved successfully.",
+        message: "Education saved successfully.",
         duration: 2
       });
 
       setForm({
-        projectName: "",
-        technologies: "",
-        duration: "",
-        description: ""
+        institution: "",
+        course: "",
+        level: "",
+        country: "",
+        duration: ""
       });
 
       setRawJson("");
-
     } catch (err) {
       setAlert({
         type: "error",
@@ -105,7 +107,7 @@ export default function Projects({ userId, email, jsonData }) {
 
   return (
     <div className="ai-knowledge-section">
-      <h3>Projects</h3>
+      <h3>Education</h3>
 
       {alert && (
         <Alert
@@ -127,19 +129,37 @@ export default function Projects({ userId, email, jsonData }) {
       ) : (
         <>
           <input
-            placeholder="Project Name"
-            value={form.projectName}
+            placeholder="Institution"
+            value={form.institution}
             onChange={(e) =>
-              setForm({ ...form, projectName: e.target.value })
+              setForm({ ...form, institution: e.target.value })
             }
             disabled={!canEdit}
           />
 
           <input
-            placeholder="Technologies"
-            value={form.technologies}
+            placeholder="Course"
+            value={form.course}
             onChange={(e) =>
-              setForm({ ...form, technologies: e.target.value })
+              setForm({ ...form, course: e.target.value })
+            }
+            disabled={!canEdit}
+          />
+
+          <input
+            placeholder="Level"
+            value={form.level}
+            onChange={(e) =>
+              setForm({ ...form, level: e.target.value })
+            }
+            disabled={!canEdit}
+          />
+
+          <input
+            placeholder="Country"
+            value={form.country}
+            onChange={(e) =>
+              setForm({ ...form, country: e.target.value })
             }
             disabled={!canEdit}
           />
@@ -150,16 +170,6 @@ export default function Projects({ userId, email, jsonData }) {
             onChange={(e) =>
               setForm({ ...form, duration: e.target.value })
             }
-            disabled={!canEdit}
-          />
-
-          <textarea
-            placeholder="Description"
-            value={form.description}
-            onChange={(e) =>
-              setForm({ ...form, description: e.target.value })
-            }
-            rows={5}
             disabled={!canEdit}
           />
         </>

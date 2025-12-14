@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { clearSession } from "./utils/authSession";
 import Login from "./pages/Login/Login";
 import Assistant from "./pages/Assistant/Assistant";
 import AiKnowledge from "./pages/AiKnowledge/AiKnowledge";
@@ -21,6 +22,7 @@ export default function App() {
   }
 
   function handleLogout() {
+    clearSession(); 
     setUser(null);
     setPage(PAGES.LOGIN);
   }
@@ -30,7 +32,8 @@ export default function App() {
       case PAGES.ASSISTANT:
         return (
           <Assistant
-            user={user}
+            userId={user?.userId}
+            email={user?.email}
             onLogout={handleLogout}
             onAiKnowledge={() => setPage(PAGES.AI_KNOWLEDGE)}
             onFeedback={() => setPage(PAGES.FEEDBACK)}

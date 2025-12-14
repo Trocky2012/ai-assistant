@@ -8,22 +8,22 @@ import Basics from "./sections/Basics/Basics";
 import Experiences from "./sections/Experiences/Experiences";
 import Projects from "./sections/Projects/Projects";
 import Strengths from "./sections/Strengths/Strengths";
-import Cv from "./sections/Cv/Cv";
+import Education from "./sections/Education/Education";
 
 const SECTIONS = [
     { key: "basics", label: "Basics" },
     { key: "experiences", label: "Experiences" },
-    // { key: "projects", label: "Projects" },
-    // { key: "strengths", label: "Strengths" },
-    // { key: "cv", label: "CV" }
+    { key: "projects", label: "Projects" },
+    { key: "strengths", label: "Strengths" },
+    { key: "education", label: "Education" }
 ];
 
 export default function AiKnowledge({ userId, email, onLogout, onBack }) {
     const [active, setActive] = useState("basics");
-    const [advanced, setAdvanced] = useState(false);
+    const [jsonData, setJsonData] = useState(false);
 
     function renderSection() {
-        const commonProps = { userId, email, advanced };
+        const commonProps = { userId, email, jsonData };
 
         switch (active) {
             case "basics":
@@ -34,8 +34,8 @@ export default function AiKnowledge({ userId, email, onLogout, onBack }) {
                 return <Projects {...commonProps} />;
             case "strengths":
                 return <Strengths {...commonProps} />;
-            case "cv":
-                return <Cv {...commonProps} />;
+            case "education":
+                return <Education {...commonProps} />;
             default:
                 return null;
         }
@@ -67,14 +67,14 @@ export default function AiKnowledge({ userId, email, onLogout, onBack }) {
                         <div className="ai-knowledge-toolbar">
                             <div className="segmented-control">
                                 <button
-                                    className={!advanced ? "active" : ""}
-                                    onClick={() => setAdvanced(false)}
+                                    className={!jsonData ? "active" : ""}
+                                    onClick={() => setJsonData(false)}
                                 >
                                     Advanced
                                 </button>
                                 <button
-                                    className={advanced ? "active" : ""}
-                                    onClick={() => setAdvanced(true)}
+                                    className={jsonData ? "active" : ""}
+                                    onClick={() => setJsonData(true)}
                                 >
                                     Raw JSON
                                 </button>

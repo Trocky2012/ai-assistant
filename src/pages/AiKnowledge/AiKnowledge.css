@@ -130,3 +130,78 @@
   border: 1px solid #d2d2d7;
   font-size: 14px;
 }
+
+
+/* Container for the list */
+.config-vars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Each row */
+.config-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f5f5f7;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+/* Key */
+.config-key {
+  font-weight: 600;
+  color: #1d1d1f;
+  min-width: 140px;
+}
+
+/* Value */
+.config-value {
+  flex: 1;
+  color: #515154;
+  word-break: break-word;
+}
+
+/* Delete button */
+.config-delete {
+  background: transparent;
+  border: 1px solid #d2d2d7;
+  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  color: #6e6e73;
+}
+
+.config-delete:hover {
+  background: #ff3b30;
+  border-color: #ff3b30;
+  color: #fff;
+}
+
+/* Add section */
+.config-add {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.config-add input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d2d2d7;
+  font-size: 16px;
+}
+
+/* Empty state */
+.config-empty {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #6e6e73;
+}

@@ -1,16 +1,18 @@
 // src/pages/AiKnowledge/sections/Experiences.jsx
 import { useEffect, useState } from "react";
 import Alert from "../../../../components/Alert/Alert";
+import { addExperience } from "../../../../api/ExperiencesApi";
+
 
 const DEFAULT_JSON = `{
-  "company": "Company test name",
-  "position": "Developer",
-  "startDate": "01/02/2025",
-  "endDate": "13/09/2025",
-  "description": "Long text description with possible many lines"
+  "company": "Company Name",
+  "position": "Your Position",
+  "startDate": "DD/MM/YYYY",
+  "endDate": "DD/MM/YYYY",
+  "description": "Description (long text)"
 }`;
 
-export default function Experiences({ userId, email, advanced }) {
+export default function Experiences({ userId, email, jsonData }) {
     const [form, setForm] = useState({
         company: "",
         position: "",
@@ -19,13 +21,13 @@ export default function Experiences({ userId, email, advanced }) {
         description: ""
     });
 
-    const [rawJson, setRawJson] = useState(DEFAULT_JSON);
+    // const [rawJson, setRawJson] = useState(DEFAULT_JSON);
+    const [rawJson, setRawJson] = useState("");
     const [alert, setAlert] = useState(null);
     const [canEdit, setCanEdit] = useState(false);
 
     /* -------------------- CHECK PERMISSION -------------------- */
     useEffect(() => {
-        // email = "thiagotrollec@gmail.com";
         if (!email) {
             setCanEdit(false);
             return;
@@ -73,39 +75,16 @@ export default function Experiences({ userId, email, advanced }) {
     }, [userId, email]); // ✅ ALWAYS same size
 
 
-
-
     /* -------------------- SUBMIT -------------------- */
     async function handleSubmit() {
         try {
-            const payload = advanced
-                ? JSON.parse(rawJson)
-                : {
-                    company: form.company.trim(),
-                    position: form.position.trim(),
-                    startDate: form.startDate,
-                    endDate: form.endDate || null,
-                    description: form.description.trim()
-                };
-
-            const res = await fetch(
-                `${process.env.REACT_APP_API_BASE_URL}add-experience`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        userId,
-                        email,
-                        ...payload
-                    })
-                }
-            );
-
-            const data = await res.json();
-
-            if (!res.ok || !data.success) {
-                throw new Error(data?.error || "Access denied");
-            }
+            await addExperience({
+                userId,
+                email,
+                jsonData,
+                rawJson,
+                form
+            });
 
             setAlert({
                 type: "success",
@@ -122,8 +101,9 @@ export default function Experiences({ userId, email, advanced }) {
                 description: ""
             });
 
-            // ✅ reset JSON editor (optional)
-            setRawJson(DEFAULT_JSON);
+            // ✅ reset JSON editor
+            setRawJson("");
+
         } catch (err) {
             setAlert({
                 type: "error",
@@ -131,6 +111,7 @@ export default function Experiences({ userId, email, advanced }) {
             });
         }
     }
+
 
     return (
         <div className="ai-knowledge-section">
@@ -147,12 +128,13 @@ export default function Experiences({ userId, email, advanced }) {
             )}
 
             {/* RAW JSON MODE */}
-            {advanced ? (
+            {jsonData ? (
                 <textarea
                     value={rawJson}
                     onChange={(e) => setRawJson(e.target.value)}
                     rows={14}
                     disabled={!canEdit}
+                    placeholder={DEFAULT_JSON}
                 />
             ) : (
                 <>
@@ -209,7 +191,7 @@ export default function Experiences({ userId, email, advanced }) {
                 onClick={handleSubmit}
                 disabled={!canEdit}
             >
-                Save Experience
+                Save
             </button>
         </div>
     );
