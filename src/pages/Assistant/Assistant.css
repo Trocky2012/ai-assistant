@@ -20,6 +20,33 @@
   border-bottom: 1px solid #e5e5ea;
 }
 
+.assistant-title {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+.assistant-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+  padding-top: 2px;
+  padding-inline: 1px;
+  font-size: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Helvetica Neue", Arial, sans-serif;
+
+  user-select: none;
+}
+
 .assistant-header h2 {
   padding: 16px 20px;
   font-size: 18px;
@@ -45,7 +72,8 @@
   max-width: 100%;
   padding: 14px 18px;
   border-radius: 16px;
-  font-size: 15px;
+  font-size: 13px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.45;
 }
 
@@ -54,6 +82,7 @@
   background: #000;
   color: #fff;
   border-bottom-right-radius: 6px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .assistant-bubble.assistant {
@@ -61,7 +90,7 @@
   background: #fff;
   color: #1d1d1f;
   border-bottom-left-radius: 6px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
 }
 
 /* Input bar */
@@ -125,6 +154,36 @@
 .assistant-logout:hover {
   background: #f0f0f0;
 }
+
+.thinking {
+  display: inline-block;
+
+  background: linear-gradient(90deg,
+      #8e8e93,
+      #000000,
+      #8e8e93);
+  background-size: 200% 100%;
+
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  animation: thinkingGradient 1.4s linear infinite;
+}
+
+@keyframes thinkingGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+
 
 /* Mobile */
 @media (max-width: 480px) {
