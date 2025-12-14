@@ -1,14 +1,19 @@
+// src/pages/Assistant/Assistant.jsx
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { LogOut } from "react-feather";
 import Header from "../../static/Header";
 import renderMarkdown from "../../utils/renderMarkdown";
+import { sendMessage } from "../../api/AssistantApi";
 
 import "./Assistant.css";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
-export default function Assistant({ onLogout, onAiKnowledge, onFeedback }) {
+export default function Assistant({
+  userId,
+  email,
+  onLogout,
+  onAiKnowledge,
+  onFeedback
+}) {
   const { t, i18n } = useTranslation();
 
   const [messages, setMessages] = useState([]);
@@ -16,7 +21,7 @@ export default function Assistant({ onLogout, onAiKnowledge, onFeedback }) {
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef(null);
 
-  // Welcome message (language-aware)
+  /* -------------------- WELCOME MESSAGE -------------------- */
   useEffect(() => {
     setMessages([
       {
@@ -26,45 +31,43 @@ export default function Assistant({ onLogout, onAiKnowledge, onFeedback }) {
     ]);
   }, [i18n.language, t]);
 
-  // Auto-scroll
+  /* -------------------- AUTO SCROLL -------------------- */
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
+  /* -------------------- SEND MESSAGE -------------------- */
   async function handleSend() {
     if (!input.trim() || loading) return;
 
-    const userMessage = { role: "user", content: input.trim() };
-    const updatedMessages = [...messages, userMessage];
+    const userText = input.trim();
 
-    setMessages(updatedMessages);
+    setMessages(prev => [
+      ...prev,
+      { role: "user", content: userText }
+    ]);
+
     setInput("");
     setLoading(true);
 
     try {
-      const res = await fetch(`${API_BASE_URL}chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          history: updatedMessages,
-          userMessage: input.trim(),
-          instructions: "",
-          userName: "Recruiter"
-        })
+      const reply = await sendMessage({
+        userId,
+        email,
+        userMessage: userText
       });
 
-      const data = await res.json();
-
-      if (!data.success) throw new Error();
-
-      setMessages((prev) => [
+      setMessages(prev => [
         ...prev,
-        { role: "assistant", content: data.reply }
+        { role: "assistant", content: reply }
       ]);
     } catch {
-      setMessages((prev) => [
+      setMessages(prev => [
         ...prev,
-        { role: "assistant", content: t("assistant.error") }
+        {
+          role: "assistant",
+          content: t("assistant.error")
+        }
       ]);
     } finally {
       setLoading(false);
@@ -87,12 +90,11 @@ export default function Assistant({ onLogout, onAiKnowledge, onFeedback }) {
         onAiKnowledge={onAiKnowledge}
       />
 
-
       {/* Chat */}
       <div className="assistant-chat">
         <div className="assistant-container assistant-chat-inner">
           {messages.map((msg, i) =>
-            msg.role !== "user" ? (
+            msg.role === "assistant" ? (
               <div
                 key={i}
                 className="assistant-bubble assistant"
