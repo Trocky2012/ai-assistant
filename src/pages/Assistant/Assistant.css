@@ -190,4 +190,28 @@
   .assistant-chat {
     padding: 16px 14px;
   }
+
+  .assistant-page {
+    width: 100%;
+  }
+
+  .assistant-logo {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* Shared centered container */
+  .assistant-container {
+    width: 94%;
+    margin: 0 auto;
+  }
+
+  .assistant-input-inner button {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    font-weight: bolder;
+  }
+
+
 }
